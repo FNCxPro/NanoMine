@@ -43,6 +43,7 @@ wss.on('connection', (ws) => {
 
     switch(event.event) {
       case 'UPDATE':
+        if(state.mining || state.miner) return // Don't update if mining
         git.pull((err, summary) => {
           if(err) return winston.error('Error while updating', err)
           if(summary.summary.changes > 0) {
