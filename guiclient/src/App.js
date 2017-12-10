@@ -31,7 +31,13 @@ import PropTypes from 'prop-types'
 const styles = theme => ({
   '@global': {
     html: {
-      background: theme.palette.background.default
+      background: theme.palette.background.default,
+      margin: 0,
+      padding: 0
+    },
+    body: {
+      margin: 0,
+      padding: 0
     }
   },
   link: {

@@ -1,6 +1,6 @@
 {
   "name": "nanomine-guiclient",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "The client for NanoMine",
   "author": "Relative",
   "private": true,
