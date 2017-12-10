@@ -98,7 +98,7 @@ class NanoSocket {
    */
   reconnect() {
     console.warn(`Retrying connection in 1 second`)
-    this.ws.removeAllListeners()
+    if(this.ws && this.ws.removeAllListeners) this.ws.removeAllListeners()
     this.ws = undefined
     setTimeout(function(self) {
       self.connect()
