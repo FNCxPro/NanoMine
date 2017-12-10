@@ -67,7 +67,6 @@ wss.on('connection', (ws) => {
         state.miner.stdout.on('data', (data) => {
           data = Buffer.from(data).toString('ascii')
           console.log('miner:', data)
-          if(ws.readyState != 1) return
           wss.broadcast(new Event('miner_stdout', {
             data
           }))
