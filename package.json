@@ -1,0 +1,20 @@
+{
+  "name": "nanomine",
+  "version": "1.0.0",
+  "description": "A cryptocurrency mining manager",
+  "main": "index.js",
+  "scripts": {
+    "install": "(start npm install Server && start npm install Client) || (npm install Server & npm install Client)"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FNCxPro/NanoMine.git"
+  },
+  "keywords": [],
+  "author": "Relative",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FNCxPro/NanoMine/issues"
+  },
+  "homepage": "https://github.com/FNCxPro/NanoMine#readme"
+}

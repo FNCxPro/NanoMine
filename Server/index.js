@@ -25,6 +25,14 @@ wss.on('connection', (ws) => {
     if(!event) {
       return winston.error('Failed to parse WS event', _event)
     }
+
+    switch(event.event) {
+      case 'UPDATE':
+        break
+      default:
+        winston.warn('Unknown event send by a client. Is your server out-of-date?')
+        break
+    }
   })
 })
 
