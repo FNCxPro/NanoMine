@@ -1,0 +1,16 @@
+{
+  "name": "nanomine-server",
+  "version": "1.0.0",
+  "description": "NanoMine server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index"
+  },
+  "keywords": [],
+  "author": "Relative",
+  "license": "ISC",
+  "dependencies": {
+    "winston": "^2.4.0",
+    "ws": "^3.3.2"
+  }
+}
