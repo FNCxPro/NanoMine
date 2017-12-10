@@ -18,6 +18,11 @@ var state = {
   miner: undefined,
   mining: false
 }
+wss.broadcast = (event) => {
+  wss.clients.forEach((ws) => {
+    if (ws.readyState === WebSocket.OPEN) client.send(ws.compress())
+  })
+}
 wss.on('connection', (ws) => {
   winston.info('New connection')
   let hello = new Event('HELLO', {
@@ -62,16 +67,17 @@ wss.on('connection', (ws) => {
         state.miner.stdout.on('data', (data) => {
           data = Buffer.from(data).toString('ascii')
           console.log('miner:', data)
-          ws.send(new Event('miner_stdout', {
+          if(ws.readyState != 1) return
+          wss.broadcast(new Event('miner_stdout', {
             data
-          }).compress())
+          }))
         })
         state.miner.stderr.on('data', (data) => {
           data = Buffer.from(data).toString('ascii')
           console.error('miner:', data)
-          ws.send(new Event('miner_stderr', {
+          wss.broadcast(new Event('miner_stderr', {
             data
-          }).compress())
+          }))
         })
         break
       case 'MINE_STOP':

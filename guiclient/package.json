@@ -4,6 +4,7 @@
   "private": true,
   "main": "public/electron.js",
   "dependencies": {
+    "ansi2html": "0.0.1",
     "electron-debug": "^1.4.0",
     "electron-is-dev": "^0.3.0",
     "material-ui": "^1.0.0-beta.23",

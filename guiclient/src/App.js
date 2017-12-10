@@ -22,8 +22,11 @@ import DesktopIcon from 'material-ui-icons/DesktopWindows'
 
 import Home from './components/Home'
 import Server from './components/Server'
+import Console from './components/Console'
 import Settings from './components/Settings'
 import {Event, NanoSocket} from './api'
+
+import ansi2html from 'ansi2html'
 
 import PropTypes from 'prop-types'
 
@@ -176,7 +179,7 @@ class App extends Component {
         <div className={classes.container}>
           <Switch>
             <Route exact path="/" component={Home}/>
-            <Route path="/console" component={Home}/>
+            <Route path="/console" component={Console}/>
             <Route path="/server" component={Server}/>
             <Route path="/settings" component={Settings}/>
           </Switch>

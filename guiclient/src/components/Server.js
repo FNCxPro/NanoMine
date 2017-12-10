@@ -68,6 +68,8 @@ class Server extends Component {
           Mining: {this.state.mining.toString()}<br/>
           <Button onClick={this.toggleMining} color="accent">Toggle Mining</Button>
           <Button onClick={this.update} color="accent">Update Server</Button>
+          <br/>
+          <Button onClick={this.forceKill}>Force Kill</Button>
 
           {this.context.ws.connected}
         </Typography>
