@@ -32,10 +32,13 @@ class Server extends Component {
   }
   toggleMining() {
     if(!this.state.mining) {
+      if(!localStorage.getItem('settings')) return
+      const settings = JSON.parse(localStorage.getItem('settings'))
       this.context.ws.send(new Event('MINE_START', {
-        pool: 'stratum+tcp://mona.suprnova.cc:2995',
-        username: 'giropita.testrig1',
-        password: 'x'
+        pool: settings.pool.ip,
+        username: settings.pool.username,
+        password: settings.pool.password,
+        algorithm: settings.pool.algorithm
       }))
       this.setState({
         mining: true
