@@ -20,7 +20,7 @@ var state = {
 }
 wss.broadcast = (event) => {
   wss.clients.forEach((ws) => {
-    if (ws.readyState === WebSocket.OPEN) client.send(ws.compress())
+    if (ws.readyState === WebSocket.OPEN) ws.send(event.compress())
   })
 }
 wss.on('connection', (ws) => {
