@@ -22,6 +22,7 @@ class Server extends Component {
       mining: false
     }
     this.toggleMining = this.toggleMining.bind(this)
+    this.forceKill = this.forceKill.bind(this)
     this.update = this.update.bind(this)
   }
   static propTypes = {
@@ -49,6 +50,9 @@ class Server extends Component {
         mining: false
       })
     }
+  }
+  forceKill() {
+    this.context.ws.send(new Event('MINE_KILL', {}))
   }
   update() {
     this.context.ws.send(new Event('update', {}))

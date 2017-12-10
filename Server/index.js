@@ -75,7 +75,13 @@ wss.on('connection', (ws) => {
         })
         break
       case 'MINE_STOP':
-        if(state.miner || !mining) break
+        if(state.miner || !state.mining) break
+        state.miner.kill()
+        state.miner = undefined
+        state.mining = false
+        break
+      case 'MINE_KILL':
+        if(!state.miner) break
         state.miner.kill()
         state.miner = undefined
         state.mining = false
