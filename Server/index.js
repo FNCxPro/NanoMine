@@ -5,7 +5,7 @@ const path = require('path')
 const pm2 = require('pm2')
 
 const git = require('simple-git')(path.join(__dirname, '..'))
-
+const child_process = require('child_process')
 const { Event } = require('../Shared')
 
 const wss = new WebSocket.Server({
@@ -36,6 +36,7 @@ wss.on('connection', (ws) => {
           if(err) return winston.error('Error while updating', err)
           pm2.connect((err) => {
             if(err) return winston.error('Error while connecting to PM2', err)
+            child_process.spawnSync('npm install')
             pm2.restart('NanoMine')
           })
         })
