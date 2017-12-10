@@ -1,6 +1,6 @@
 {
   "name": "nanomine-server",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "NanoMine server",
   "main": "index.js",
   "scripts": {
