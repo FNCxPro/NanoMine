@@ -62,9 +62,20 @@ class App extends Component {
     this.closeDrawer = this.closeDrawer.bind(this)
     this.openSettings = this.openSettings.bind(this)
     this.closeSettings = this.closeSettings.bind(this)
+    if (!localStorage.getItem('settings')) {
+      localStorage.setItem('settings', JSON.stringify({
+        server: {
+          ip: '127.0.0.1',
+          port: 6516
+        },
+        pool: {},
+        auth: {}
+      }))
+    }
+    let settings = JSON.parse(localStorage.getItem('settings'))
     const ws = new NanoSocket({
-      ip: '192.168.7.250',
-      port: 6516
+      ip: settings.server.ip,
+      port: settings.server.port
     })
     ws.on('hello', (_, payload, event) => {
       ws.connected = true
