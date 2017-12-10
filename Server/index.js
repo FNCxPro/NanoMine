@@ -32,13 +32,15 @@ wss.on('connection', (ws) => {
 
     switch(event.event) {
       case 'UPDATE':
-        git.pull((err, f) => {
+        git.pull((err, summary) => {
           if(err) return winston.error('Error while updating', err)
-          pm2.connect((err) => {
-            if(err) return winston.error('Error while connecting to PM2', err)
-            child_process.spawnSync('npm install')
-            pm2.restart('NanoMine')
-          })
+          if(summary.summary.changes > 0) {
+            pm2.connect((err) => {
+              if(err) return winston.error('Error while connecting to PM2', err)
+              child_process.spawnSync('npm install')
+              pm2.restart('NanoMine')
+            })
+          }
         })
         break
       default:
