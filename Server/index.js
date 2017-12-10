@@ -54,6 +54,7 @@ wss.on('connection', (ws) => {
       case 'MINE_START':
         if(state.mining || state.miner) break
         const {algorithm, pool, username, password} = event.payload
+        console.log(['-a', `${algorithm}`, '-o', `"${pool}"`, '-u', `"${username}"`, '-p', `"${password}"`].join(' '))
         state.miner = spawn('ccminer-x64', ['-a', `${algorithm}`, '-o', `"${pool}"`, '-u', `"${username}"`, '-p', `"${password}"`], {
           cwd: path.join(__dirname, '..', 'Binaries', 'ccminer'),
           windowsHide: true
