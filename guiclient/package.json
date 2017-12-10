@@ -1,6 +1,8 @@
 {
   "name": "nanomine-guiclient",
   "version": "1.2.0",
+  "description": "The client for NanoMine",
+  "author": "Relative",
   "private": true,
   "main": "public/electron.js",
   "dependencies": {
@@ -23,7 +25,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "electron-dev": "concurrently \"npm start\" \"wait-on http://localhost:3000 && electron .\""
+    "electron-dev": "concurrently \"npm start\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron-pack": "build --em.main=build/electron.js"
   },
   "devDependencies": {
     "concurrently": "^3.5.1",
@@ -31,5 +34,15 @@
     "electron": "^1.7.9",
     "electron-builder": "^19.48.3",
     "wait-on": "^2.0.2"
+  },
+  "build": {
+    "appId": "pro.relative.nanomine",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "directories":{
+      "buildResources": "assets"
+    }
   }
 }
