@@ -54,6 +54,18 @@ wss.on('connection', (ws) => {
         state.miner = spawn('ccminer-x64', ['-a', 'lyra2rev2', '-o', 'stratum+tcp://mona.suprnova.cc:2995', '-u', 'giropita.testrig1', '-p', 'x'], {
           cwd: path.join(__dirname, '..', 'Binaries', 'ccminer')
         })
+        state.miner.stdout.on('data', (data) => {
+          console.log('miner:', data)
+          ws.send(new Event('miner_stdout', {
+            data
+          }).compress())
+        })
+        state.miner.stderr.on('data', (data) => {
+          console.error('miner:', data)
+          ws.send(new Event('miner_stderr', {
+            data
+          }).compress())
+        })
         break
       case 'MINE_STOP':
         state.miner.kill()

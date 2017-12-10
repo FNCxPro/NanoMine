@@ -16,6 +16,12 @@ ws.on('hello', (_, payload, event) => {
   ws.send(new Event('mine_start', {}))
 
 })
+ws.on('miner_stdout', (_, payload, event) => {
+  console.log('miner:', payload.data)
+})
+ws.on('miner_stderr', (_, payload, event) => {
+  console.error('miner:', payload.data)
+})
 
 
 ws.connect()
