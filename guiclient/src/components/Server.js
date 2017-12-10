@@ -31,7 +31,21 @@ class Server extends Component {
     ws: PropTypes.object.isRequired
   }
   toggleMining() {
-
+    if(!this.state.mining) {
+      this.context.ws.send(new Event('MINE_START', {
+        pool: 'stratum+tcp://mona.suprnova.cc:2995',
+        username: 'giropita.testrig1',
+        password: 'x'
+      }))
+      this.setState({
+        mining: true
+      })
+    } else {
+      this.context.ws.send(new Event('MINE_STOP', {}))
+      this.setState({
+        mining: false
+      })
+    }
   }
   update() {
     this.context.ws.send(new Event('update', {}))
@@ -44,6 +58,7 @@ class Server extends Component {
         <DocumentTitle title="NanoMine Client"/>
         <Header title="NanoMine" subtitle="Server"/>
         <Typography type="body2">
+          Mining: {this.state.mining.toString()}<br/>
           <Button onClick={this.toggleMining} color="accent">Toggle Mining</Button>
           <Button onClick={this.update} color="accent">Update Server</Button>
 
