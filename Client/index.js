@@ -13,7 +13,8 @@ const ws = new NanoSocket({
 ws.on('hello', (_, payload, event) => {
   winston.info(`Connected to ${payload.server}`)
   ws.send(new Event('update', {}))
-  ws.send(new Event('mine_stop', {}))
+  ws.send(new Event('mine_start', {}))
+
 })
 
 
