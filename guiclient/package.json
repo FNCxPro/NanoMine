@@ -4,7 +4,7 @@
   "private": true,
   "main": "public/electron.js",
   "dependencies": {
-    "ansi2html": "0.0.1",
+    "ansi-to-html": "^0.6.3",
     "electron-debug": "^1.4.0",
     "electron-is-dev": "^0.3.0",
     "material-ui": "^1.0.0-beta.23",
@@ -13,6 +13,7 @@
     "react": "^16.2.0",
     "react-document-title": "^2.0.3",
     "react-dom": "^16.2.0",
+    "react-html-parser": "^2.0.2",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.17",
     "typeface-roboto": "0.0.45"

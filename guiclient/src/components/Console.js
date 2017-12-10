@@ -6,10 +6,15 @@ import {withStyles} from 'material-ui/styles'
 
 import Header from './Header'
 
-const ansi2html = require('ansi2html')
+import Convert from 'ansi-to-html'
 
+import ReactHtmlParser from 'react-html-parser'
+
+const converter = new Convert()
 const styles = theme => ({
-  content: {}
+  typography: {
+    textAlign: 'left'
+  }
 })
 
 class Console extends Component {
@@ -21,14 +26,14 @@ class Console extends Component {
     this.context.ws.on('miner_stdout', (_, payload, event) => {
       console.log(payload.data)
       let buffer = this.state.buffer
-      buffer.push(ansi2html(payload.data))
+      buffer.push(converter.toHtml(payload.data))
       this.setState({
         buffer: buffer
       })
     })
     this.context.ws.on('miner_stderr', (_, payload, event) => {
       let buffer = this.state.buffer
-      buffer.push(ansi2html(payload.data))
+      buffer.push(converter.toHtml(payload.data))
       this.setState({
         buffer: buffer
       })
@@ -46,7 +51,9 @@ class Console extends Component {
       <div className={classes.content}>
         <DocumentTitle title="NanoMine Client"/>
         <Header title="NanoMine" subtitle="Console"/>
-        {this.state.buffer.map(item => <span>{item}</span>)}
+        <Typography className={classes.typography}>
+          {this.state.buffer.map(item => <span>{ReactHtmlParser(item)}<br/></span>)}
+        </Typography>
       </div>
     )
   }
