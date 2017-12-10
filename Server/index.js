@@ -6,11 +6,17 @@ const pm2 = require('pm2')
 
 const git = require('simple-git')(path.join(__dirname, '..'))
 const child_process = require('child_process')
+const spawn = child_process.spawn
+
 const { Event } = require('../Shared')
 
 const wss = new WebSocket.Server({
   port: 6516
 })
+
+var state = {
+  miner: undefined
+}
 
 wss.on('connection', (ws) => {
   winston.info('New connection')
@@ -43,8 +49,15 @@ wss.on('connection', (ws) => {
           }
         })
         break
+      case 'MINE_START':
+        const params = `ccminer-x64 -a lyra2rev2 -o stratum+tcp://mona.suprnova.cc:2995 -u giropita.testrig1 -p x`
+        state.miner = spawn(path.join(__dirname, '..', 'Binaries', 'ccminer', 'ccminer-x64.exe'), ['-a', 'lyra2rev2', '-o', 'stratum+tcp://mona.suprnova.cc:2995', '-u', 'giropita.testrig1', '-p', 'x'])
+        break
+      case 'MINE_STOP':
+        state.miner.kill()
+        break
       default:
-        winston.warn('Unknown event send by a client. Is your server out-of-date?')
+        winston.warn('Unknown event sent by a client. Is your server out-of-date?')
         break
     }
   })
