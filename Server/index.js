@@ -55,14 +55,14 @@ wss.on('connection', (ws) => {
           cwd: path.join(__dirname, '..', 'Binaries', 'ccminer')
         })
         state.miner.stdout.on('data', (data) => {
-          data = Buffer.from(data).toString(ascii)
+          data = Buffer.from(data).toString('ascii')
           console.log('miner:', data)
           ws.send(new Event('miner_stdout', {
             data
           }).compress())
         })
         state.miner.stderr.on('data', (data) => {
-          data = Buffer.from(data).toString(ascii)
+          data = Buffer.from(data).toString('ascii')
           console.error('miner:', data)
           ws.send(new Event('miner_stderr', {
             data
