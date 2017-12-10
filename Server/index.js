@@ -15,9 +15,9 @@ const wss = new WebSocket.Server({
 })
 
 var state = {
-  miner: undefined
+  miner: undefined,
+  mining: false
 }
-
 wss.on('connection', (ws) => {
   winston.info('New connection')
   let hello = new Event('HELLO', {
@@ -43,17 +43,22 @@ wss.on('connection', (ws) => {
           if(summary.summary.changes > 0) {
             pm2.connect((err) => {
               if(err) return winston.error('Error while connecting to PM2', err)
-              child_process.spawnSync('npm install')
+              child_process.spawnSync('npm install', {
+                windowsHide: true
+              })
               pm2.restart('NanoMine')
             })
           }
         })
         break
       case 'MINE_START':
-        const params = `ccminer-x64 -a lyra2rev2 -o stratum+tcp://mona.suprnova.cc:2995 -u giropita.testrig1 -p x`
-        state.miner = spawn('ccminer-x64', ['-a', 'lyra2rev2', '-o', 'stratum+tcp://mona.suprnova.cc:2995', '-u', 'giropita.testrig1', '-p', 'x'], {
-          cwd: path.join(__dirname, '..', 'Binaries', 'ccminer')
+        if(state.mining || state.miner) break
+        const {pool, username, password} = event.payload
+        state.miner = spawn('ccminer-x64', ['-a', 'lyra2rev2', '-o', pool, '-u', username, '-p', password], {
+          cwd: path.join(__dirname, '..', 'Binaries', 'ccminer'),
+          windowsHide: true
         })
+        state.mining = true
         state.miner.stdout.on('data', (data) => {
           data = Buffer.from(data).toString('ascii')
           console.log('miner:', data)
@@ -70,7 +75,15 @@ wss.on('connection', (ws) => {
         })
         break
       case 'MINE_STOP':
+        if(state.miner || !mining) break
         state.miner.kill()
+        state.miner = undefined
+        state.mining = false
+        break
+      case 'STATUS':
+        ws.send(new Event('status', {
+          mining: state.mining
+        }).compress())
         break
       default:
         winston.warn('Unknown event sent by a client. Is your server out-of-date?')
