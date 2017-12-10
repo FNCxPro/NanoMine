@@ -4,7 +4,7 @@
   "description": "A cryptocurrency mining manager",
   "main": "index.js",
   "scripts": {
-    "install": "(start npm install Server && start npm install Client) || (npm install Server & npm install Client)"
+    "install": "(npm install Server && npm install Client) || (npm install Server & npm install Client)"
   },
   "repository": {
     "type": "git",
