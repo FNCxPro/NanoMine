@@ -24,6 +24,9 @@ const styles = theme => ({
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
   },
+  typography: {
+    width: '100%'
+  }
 })
 
 class Settings extends Component {
@@ -36,8 +39,15 @@ class Settings extends Component {
         auth: {}
       }))
     }
+    let settings = JSON.parse(localStorage.getItem('settings'))
     this.state = {
       expanded: null,
+      serverIp: settings.server.ip || undefined,
+      serverPort: settings.server.port || undefined,
+      poolIp: settings.pool.ip || undefined,
+      poolUser: settings.pool.username || undefined,
+      poolPass: settings.pool.password || undefined,
+      poolAlgo: settings.pool.algorithm || undefined,
       settings: JSON.parse(localStorage.getItem('settings'))
     }
 
@@ -55,8 +65,6 @@ class Settings extends Component {
     })
   }
   handleTextChange = name => (event) => {
-    console.log(event.target.value)
-    if(event.target.value.length < 1) return
     this.setState({
       [name]: event.target.value
     })
@@ -71,9 +79,14 @@ class Settings extends Component {
     settings.pool.password = this.state.poolPass || settings.pool.password
     settings.pool.algorithm = this.state.poolAlgo || settings.pool.algorithm
 
-
     localStorage.setItem('settings', JSON.stringify(settings))
     this.setState({
+      serverIp: settings.server.ip || undefined,
+      serverPort: settings.server.port || undefined,
+      poolIp: settings.pool.ip || undefined,
+      poolUser: settings.pool.username || undefined,
+      poolPass: settings.pool.password || undefined,
+      poolAlgo: settings.pool.algorithm || undefined,
       settings: settings
     })
   }
@@ -91,9 +104,9 @@ class Settings extends Component {
             <Typography className={classes.secondaryHeading}>Change the server IP and port</Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
-            <Typography>
-              <TextField label="Server IP" margin="normal" value={this.state.settings.server.ip} onChange={this.handleTextChange('serverIp')}/><br/>
-              <TextField label="Server Port" margin="normal" value={this.state.settings.server.port ? this.state.settings.server.port.toString() : undefined} onChange={this.handleTextChange('serverPort')}/>
+            <Typography className={classes.typography}>
+              <TextField label="Server IP" fullWidth margin="normal" value={this.state.serverIp} onChange={this.handleTextChange('serverIp')}/><br/>
+              <TextField label="Server Port" fullWidth margin="normal" value={this.state.serverPort ? this.state.serverPort.toString() : undefined} onChange={this.handleTextChange('serverPort')}/>
             </Typography>
           </ExpansionPanelDetails>
         </ExpansionPanel>
@@ -103,12 +116,11 @@ class Settings extends Component {
             <Typography className={classes.secondaryHeading}>Change the pool settings</Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
-            <Typography>
-              <TextField label="Pool IP" helperText="Begins with stratum://" margin="normal" value={this.state.settings.pool.ip} onChange={this.handleTextChange('poolIp')}/><br/>
-              <TextField label="Worker Username" margin="normal" value={this.state.settings.pool.username} onChange={this.handleTextChange('poolUser')}/><br/>
-              <TextField label="Worker Password" margin="normal" value={this.state.settings.pool.password} onChange={this.handleTextChange('poolPass')}/><br/>
-              <TextField label="Worker Algorithm" margin="normal" value={this.state.settings.pool.algorithm} onChange={this.handleTextChange('poolAlgo')}/>
-
+            <Typography className={classes.typography}>
+              <TextField label="Pool IP" fullWidth helperText="Begins with stratum://" margin="normal" value={this.state.poolIp} onChange={this.handleTextChange('poolIp')}/><br/>
+              <TextField label="Worker Username" fullWidth margin="normal" value={this.state.poolUser} onChange={this.handleTextChange('poolUser')}/><br/>
+              <TextField label="Worker Password" fullWidth margin="normal" value={this.state.poolPass} onChange={this.handleTextChange('poolPass')}/><br/>
+              <TextField label="Worker Algorithm" fullWidth margin="normal" value={this.state.poolAlgo} onChange={this.handleTextChange('poolAlgo')}/>
             </Typography>
           </ExpansionPanelDetails>
         </ExpansionPanel>
