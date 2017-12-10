@@ -1,6 +1,9 @@
 const package = require('./package.json')
 const winston = require('winston')
 const WebSocket = require('ws')
+const path = require('path')
+
+const git = require('simple-git')(path.join(__dirname, '..'))
 
 const {Event} = require('../Shared')
 
@@ -28,6 +31,9 @@ wss.on('connection', (ws) => {
 
     switch(event.event) {
       case 'UPDATE':
+        git.pull((err, f) => {
+          console.log(err, f)
+        })
         break
       default:
         winston.warn('Unknown event send by a client. Is your server out-of-date?')
