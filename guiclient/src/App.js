@@ -26,8 +26,6 @@ import Console from './components/Console'
 import Settings from './components/Settings'
 import {Event, NanoSocket} from './api'
 
-import ansi2html from 'ansi2html'
-
 import PropTypes from 'prop-types'
 
 const styles = theme => ({

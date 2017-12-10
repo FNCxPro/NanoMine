@@ -71,12 +71,13 @@ class NanoSocket {
       try {
         event = new Event(_event.data)
       } catch (err) {
-        return console.error('F ailed to parse WS event', _event)
+        return console.error('Failed to parse WS event', _event)
       }
       if (!event) {
         return console.error('Failed to parse WS event', _event)
       }
       let eventName = event.event
+      console.debug(event, event.event, event.payload)
       if(eventName && this.listeners[eventName]) {
         for(const listener of this.listeners[eventName]) {
           try {
