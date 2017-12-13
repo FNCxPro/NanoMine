@@ -86,7 +86,6 @@ class App extends Component {
     ws.on('hello', (_, payload, event) => {
       ws.connected = true
       console.info(`Connected to ${payload.server}`)
-      ws.send(new Event('update', {}))
     })
     ws.on('miner_stdout', (_, payload, event) => {
       console.log('miner:', payload.data)
