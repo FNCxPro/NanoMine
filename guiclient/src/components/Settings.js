@@ -71,6 +71,7 @@ class Settings extends Component {
   }
   saveSettings() {
     let settings = this.state.settings
+    settings.miner = settings.miner || {}
     settings.server.ip = this.state.serverIp || settings.server.ip
     settings.server.port = parseInt(this.state.serverPort) || settings.server.port
 
@@ -124,16 +125,16 @@ class Settings extends Component {
             </Typography>
           </ExpansionPanelDetails>
         </ExpansionPanel>
-        <ExpansionPanel expanded={expanded === 'auth'} onChange={this.handleChange('auth')}>
+        <ExpansionPanel expanded={expanded === 'miner'} onChange={this.handleChange('miner')}>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography className={classes.heading}>Auth Settings</Typography>
+            <Typography className={classes.heading}>Miner Settings</Typography>
             <Typography className={classes.secondaryHeading}>
-              Change server username and password
+              Change mining software
             </Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <Typography>
-              Auth settings
+              Miner settings coming soon.
             </Typography>
           </ExpansionPanelDetails>
         </ExpansionPanel><br/>

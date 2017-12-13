@@ -39,7 +39,8 @@ class Server extends Component {
         pool: settings.pool.ip,
         username: settings.pool.username,
         password: settings.pool.password,
-        algorithm: settings.pool.algorithm
+        algorithm: settings.pool.algorithm,
+        miner: settings.miner.miner || 0 // 0 == ccminer
       }))
       this.setState({
         mining: true
