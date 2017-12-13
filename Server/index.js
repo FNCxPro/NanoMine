@@ -59,12 +59,38 @@ wss.on('connection', (ws) => {
         break
       case 'MINE_START':
         if(state.mining || state.miner) break
-        const {algorithm, pool, username, password} = event.payload
-        state.miner = spawn('ccminer-x64', ['-a', `${algorithm}`, '-o', `${pool}`, '-u', `${username}`, '-p', `${password}`], {
-          cwd: path.join(__dirname, '..', 'Binaries', 'ccminer'),
+        const {algorithm, pool, username, password, miner} = event.payload
+        let _miner = miner || 0
+        
+        let args = []
+        let exec = ''
+        let cwd  = ''
+        switch(_miner) {
+          case 0: // ccminer
+            args = ['-a', `${algorithm}`, '-o', `${pool}`, '-u', `${username}`, '-p', `${password}`]
+            exec = 'ccminer-x64',
+            cwd  = path.join(__dirname, '..', 'Binaries', 'ccminer')
+            break
+          default:
+            winston.error('Invalid miner int sent by a client. Cannot start mining')
+            ws.send(new Event('SERVER_ERROR', {
+              error: 'Invalid miner sent. Cannot start mining.'
+            }).compress())
+            break
+        }
+        state.miner = spawn(exec, args, {
+          cwd: cwd,
           windowsHide: true
         })
         state.mining = true
+        state.miner.on('close', (code) => {
+          winston.error('Miner crashed or closed with code: '+code)
+          wss.broadcast(new Event('miner_crashed', {
+            code: code
+          }))
+          state.miner = undefined
+          state.mining = false
+        })
         state.miner.stdout.on('data', (data) => {
           data = Buffer.from(data).toString('ascii')
           console.log('miner:', data)
