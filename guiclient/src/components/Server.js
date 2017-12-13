@@ -56,7 +56,7 @@ class Server extends Component {
     this.context.ws.send(new Event('MINE_KILL', {}))
   }
   update() {
-    this.context.ws.send(new Event('update', {}))
+    this.context.ws.send(new Event('UPDATE', {}))
   }
   render() {
     const {classes} = this.props
