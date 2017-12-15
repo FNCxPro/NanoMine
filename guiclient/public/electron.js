@@ -6,26 +6,15 @@ const isDev = require('electron-is-dev')
 
 let mainWindow
 
-const notifier = require('node-notifier')
-
 require('electron-debug')({
   enabled: true
-})
-
-ipcMain.on('notify', (e, arg) => {
-  console.log(arg)
-  console.log('test')
-  notifier.notify({
-    title: 'Title',
-    message: 'test',
-    appID: 'pro.relative.nanomine'
-  })
 })
 
 function createWindow() {
   mainWindow = new BrowserWindow({width: 900, height: 680})
   mainWindow.setMenu(null)
-  mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`)
+  //mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`)
+  mainWindow.loadURL(isDev ? 'http://localhost:3000' : 'https://nanomine.relative.cloud')
   mainWindow.on('closed', () => mainWindow = null)
 }
 
