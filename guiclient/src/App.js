@@ -32,6 +32,8 @@ import DocumentTitle from 'react-document-title'
 
 import PropTypes from 'prop-types'
 
+import {NotificationEngine} from './api/notifications'
+
 const styles = theme => ({
   '@global': {
     html: {
@@ -68,7 +70,6 @@ const styles = theme => ({
     paddingTop: 25
   }
 })
-
 class App extends Component {
   constructor(props) {
     super(props)
@@ -104,6 +105,7 @@ class App extends Component {
       ws.on('hello', (_, payload, event) => {
         ws.connected = true
         console.info(`Connected to ${payload.server}`)
+        NotificationEngine.notify('Title', 'body', () => {console.log('e')})
       })
       ws.on('miner_stdout', (_, payload, event) => {
         console.log('miner:', payload.data)

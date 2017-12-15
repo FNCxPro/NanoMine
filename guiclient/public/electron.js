@@ -1,16 +1,26 @@
 const electron = require('electron')
-const app = electron.app
-const BrowserWindow = electron.BrowserWindow
+const { BrowserWindow, ipcMain, app } = require('electron')
 const path = require('path')
 const url = require('url')
 const isDev = require('electron-is-dev')
 
 let mainWindow
 
+const notifier = require('node-notifier')
+
 require('electron-debug')({
   enabled: true
 })
 
+ipcMain.on('notify', (e, arg) => {
+  console.log(arg)
+  console.log('test')
+  notifier.notify({
+    title: 'Title',
+    message: 'test',
+    appID: 'pro.relative.nanomine'
+  })
+})
 
 function createWindow() {
   mainWindow = new BrowserWindow({width: 900, height: 680})
