@@ -6,6 +6,12 @@ import ExpansionPanel, { ExpansionPanelDetails, ExpansionPanelSummary } from 'ma
 import Typography from 'material-ui/Typography'
 import Button from 'material-ui/Button'
 import TextField from 'material-ui/TextField'
+import Input, { InputLabel } from 'material-ui/Input'
+import { MenuItem } from 'material-ui/Menu'
+import { FormControl } from 'material-ui/Form'
+import Select from 'material-ui/Select'
+
+
 
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore'
 
@@ -40,6 +46,7 @@ class Settings extends Component {
       }))
     }
     let settings = JSON.parse(localStorage.getItem('settings'))
+    settings.miner = settings.miner || {}
     this.state = {
       expanded: null,
       serverIp: settings.server.ip || undefined,
@@ -48,13 +55,10 @@ class Settings extends Component {
       poolUser: settings.pool.username || undefined,
       poolPass: settings.pool.password || undefined,
       poolAlgo: settings.pool.algorithm || undefined,
+      miner: settings.miner.miner || 0,
       settings: JSON.parse(localStorage.getItem('settings'))
     }
-
     this.saveSettings = this.saveSettings.bind(this)
-  }
-  state = {
-    expanded: null
   }
   static propTypes = {
     classes: PropTypes.object.isRequired
@@ -69,9 +73,14 @@ class Settings extends Component {
       [name]: event.target.value
     })
   }
+  handleMinerChange = event => {
+    this.setState({
+      [event.target.name]: event.target.value
+    })
+  }
+
   saveSettings() {
     let settings = this.state.settings
-    settings.miner = settings.miner || {}
     settings.server.ip = this.state.serverIp || settings.server.ip
     settings.server.port = parseInt(this.state.serverPort) || settings.server.port
 
@@ -79,6 +88,8 @@ class Settings extends Component {
     settings.pool.username = this.state.poolUser || settings.pool.username
     settings.pool.password = this.state.poolPass || settings.pool.password
     settings.pool.algorithm = this.state.poolAlgo || settings.pool.algorithm
+
+    settings.miner.miner = typeof this.state.miner === 'number' ? parseInt(this.state.miner) : settings.miner.miner
 
     localStorage.setItem('settings', JSON.stringify(settings))
     this.setState({
@@ -88,6 +99,7 @@ class Settings extends Component {
       poolUser: settings.pool.username || undefined,
       poolPass: settings.pool.password || undefined,
       poolAlgo: settings.pool.algorithm || undefined,
+      miner: settings.miner.miner || 0,
       settings: settings
     })
   }
@@ -133,8 +145,14 @@ class Settings extends Component {
             </Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
-            <Typography>
-              Miner settings coming soon.
+            <Typography className={classes.typography}>
+              <FormControl>
+                <InputLabel htmlFor="miner">Miner</InputLabel>
+                <Select value={this.state.miner} onChange={this.handleMinerChange} input={<Input name="miner" id="miner" />}>
+                  <MenuItem value={0}>ccminer</MenuItem>
+                  <MenuItem value={1}>EWBF</MenuItem>
+                </Select>
+              </FormControl>
             </Typography>
           </ExpansionPanelDetails>
         </ExpansionPanel><br/>
