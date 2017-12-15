@@ -118,7 +118,7 @@ class Settings extends Component {
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <Typography className={classes.typography}>
-              <TextField label="Pool IP" fullWidth helperText="Begins with stratum://" margin="normal" value={this.state.poolIp} onChange={this.handleTextChange('poolIp')}/><br/>
+              <TextField label="Pool IP" fullWidth helperText="For ccminer it begins with stratum+tcp://, EWBF miner you just put the ip and the port like pool.example.com:6666" margin="normal" value={this.state.poolIp} onChange={this.handleTextChange('poolIp')}/><br/>
               <TextField label="Worker Username" fullWidth margin="normal" value={this.state.poolUser} onChange={this.handleTextChange('poolUser')}/><br/>
               <TextField label="Worker Password" fullWidth margin="normal" value={this.state.poolPass} onChange={this.handleTextChange('poolPass')}/><br/>
               <TextField label="Worker Algorithm" fullWidth margin="normal" value={this.state.poolAlgo} onChange={this.handleTextChange('poolAlgo')}/>

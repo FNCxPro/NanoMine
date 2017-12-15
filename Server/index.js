@@ -67,9 +67,31 @@ wss.on('connection', (ws) => {
         let cwd  = ''
         switch(_miner) {
           case 0: // ccminer
-            args = ['-a', `${algorithm}`, '-o', `${pool}`, '-u', `${username}`, '-p', `${password}`]
+            args = ['-a', algorithm, '-o', pool, '-u', username, '-p', password]
             exec = 'ccminer-x64',
             cwd  = path.join(__dirname, '..', 'Binaries', 'ccminer')
+            break
+          case 1: // ewbf
+            if(pool.indexOf(':') == -1) {
+              return ws.send(new Event('SERVER_ERROR', {
+                error: 'Please put a port in the pool IP'
+              }).compress())
+            }
+            if(pool.indexOf('stratum+tcp://') != -1) {
+              return ws.send(new Event('SERVER_ERROR', {
+                error: 'Please do not put stratum+tcp:// in the pool'
+              }).compress())
+            }
+            let _ip = pool.split(':')
+            let ip = _ip[0]
+            let port = _ip[1]
+            args = ['--server', ip, '--port', port, '--user', username]
+            if(typeof password == 'string') {
+              args.push('-pass')
+              args.push(password)
+            }
+            exec = 'miner'
+            cwd = path.join(__dirname, '..', 'Binaries', 'ewbf')
             break
           default:
             winston.error('Invalid miner int sent by a client. Cannot start mining')
