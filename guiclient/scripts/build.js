@@ -40,13 +40,27 @@ if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
   process.exit(1);
 }
 
+function emptyDirSync(dir) {
+  let items
+  try {
+    items = fs.readdirSync(dir)
+  } catch(err) {
+    return fs.mkdirsSync(dir)
+  }
+  items.forEach(item => {
+    item = path.join(dir, item)
+    if(item.indexOf('CNAME') !== -1) return
+    fs.removeSync(item)
+  })
+}
+
 // First, read the current file sizes in build directory.
 // This lets us display how much they changed later.
 measureFileSizesBeforeBuild(paths.appBuild)
   .then(previousFileSizes => {
     // Remove all content but keep the directory so that
     // if you're in it, you don't end up in Trash
-    fs.emptyDirSync(paths.appBuild);
+    emptyDirSync(paths.appBuild);
     // Merge with the public folder
     copyPublicFolder();
     // Start the webpack build
